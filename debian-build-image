@@ -311,7 +311,7 @@ if [[ -n "$UBUNTU_EXTRAS" ]]; then
 	echo -e "${Y}NOTE:${Z} Attempting extra fixes for Ubuntu >= 13.10 and similar"
 	# fix neon missing proxy.h
 	[[ -f "/usr/include/proxy.h" ]] || fatal "expected to find proxy.h from package libproxy-dev in /usr/include. It's not there, though."
-	cp /usr/include/proxy.h "$BASEDIR/release/src/router/neon/" || fatal "failed to copy proxy.h into source tree" 
+	cp /usr/include/proxy.h "$BASEDIR/release/src/router/neon/" || fatal "failed to copy proxy.h into source tree"
 	# fix broken configure script for libdaemon
 	( cd "$BASEDIR/release/src/router/libdaemon" && aclocal ) || fatal "failed to fix broken configure script for libdaemon"
 	# fix broken configure script for libxml2

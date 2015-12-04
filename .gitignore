@@ -1,3 +1,4 @@
 release/*
 build.log
 asuswrt-merlin/
+.vagrant*/*

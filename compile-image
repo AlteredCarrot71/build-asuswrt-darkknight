@@ -29,8 +29,11 @@ RELEASEDIR="release"
 ## The path of the Vagrant shared folder.
 VOLUME="/vagrant"
 
-## The URL of the asuswrt-merlin Git repository.
-GITURL="https://github.com/RMerl/asuswrt-merlin"
+## Fork GitHub username
+FORK="RMerl"
+
+# The URL of the asuswrt-merlin Git repository.
+GITURL="https://github.com/$FORK/asuswrt-merlin"
 REMOTE=origin
 
 ## The name of the build script.
@@ -44,12 +47,13 @@ export DEBIAN_FRONTEND=noninteractive
 display_help() {
 	echo "Usage: ${SELFNAME} [OPTION]..."
 	echo "Build asuswrt-merlin image for ASUS router from sources."
-	echo "Example: ${SELFNAME} -m RT-N66U -r 378.55"
+	echo "Example: ${SELFNAME} -m RT-N66U -r 378.56_2"
 	echo ""
 	echo "  -h, --help        display this help and exit"
 	echo "  -m, --model       optional router model name you'd build image"
+	echo "  -f, --fork        optional GitHub username of the asuswrt-merlin fork"
 	echo "  -r, --release     optional release specified by tag or branch in the git repository"
-	echo "                    see https://github.com/RMerl/asuswrt-merlin/releases"
+	echo "                    see ${GITURL}/releases"
 	echo "                    for more details Default is 'master'."
 	echo ""
 	echo "This script should be run in a virtual machine."
@@ -93,6 +97,9 @@ provision() {
 checkout_sources() {
 	echo "Get asuswrt-merlin sources"
 
+	# update $FORK from cmd-line arguments
+	GITURL="https://github.com/$FORK/asuswrt-merlin"
+
 	# enshure we have asuswrt-merlin sources
 	if [ ! -d "$SRCDIR" ]; then
 		echo "Clone $GITURL repository"
@@ -102,11 +109,7 @@ checkout_sources() {
 	cd "$SRCDIR"
 
 	echo "Check $(git config --get remote.${REMOTE}.url) for updates"
-	git fetch "$REMOTE" || echo "Skipped: remote repository does not reachable now."
-
-	echo "Cleanup source directory"
-	git reset
-	git clean -dffx
+	git fetch "$REMOTE" || echo "Skipped: remote repository not reachable now."
 
 	if [ -n "$RELEASE" ]; then
 		echo "Checkout release '$RELEASE'"
@@ -115,6 +118,10 @@ checkout_sources() {
 	else
 		RELEASE="$(git describe --always --tags)"
 	fi
+
+	echo "Cleanup source directory"
+	git reset --hard
+	git clean -dffqx
 }
 
 
@@ -177,6 +184,10 @@ while test $# -gt 0; do
 			RELEASE="$2"
 			shift
 			;;
+		-f|--fork)
+			FORK="$2"
+			shift
+			;;
 		--) # End of all options
 			break;
 			;;
@@ -202,4 +213,3 @@ done
 
 
 do_compile
-

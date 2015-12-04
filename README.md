@@ -118,13 +118,13 @@ First run a virtual machine:
 
 Second look for some firmware release version on [releases page](https://github.com/RMerl/asuswrt-merlin/releases) and build an image for desired router model:
 
-    vagrant ssh -- compile-image -m RT-N66U -r 378.55
+    vagrant ssh -- compile-image -m RT-N66U -r 378.56_2
 
 Then wait for cloning sources from GitHub into VM, building an image and copying it to `release/` directory.
 
 You can build firmware from any Git branch, for example 'master':
 
-    vagrant ssh -- compile-image -m RT-N66U -r master
+    vagrant ssh -- compile-image -m RT-AC87U -r master
 
 At the end, stop VM:
 
