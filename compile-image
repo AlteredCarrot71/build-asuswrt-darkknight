@@ -37,7 +37,7 @@ GITURL="https://github.com/$FORK/asuswrt-merlin"
 REMOTE=origin
 
 ## The name of the build script.
-BUILD_IMAGE="ubuntu-build-image"
+BUILD_IMAGE="debian-build-image"
 
 LOGFILE="/tmp/build.log"
 SELFNAME="${0##*/}"
@@ -61,7 +61,7 @@ display_help() {
 
 
 check_locale() (
-	# enshure all used locales are defined
+	# ensure all used locales are defined
 	get_undefined_locales() {
 		# this display locales in 'locale' output that are missed in 'locale -a'
 		locale 2>/dev/null \
@@ -80,13 +80,17 @@ check_locale() (
 
 
 provision() {
-	echo "Enshure all requirements are installed"
+	echo "Ensure all requirements are installed"
 	check_locale
 
-	# enshure we are have 'git' installed
+	echo "Upgrade system"
+	sudo apt-get update -y
+	sudo apt-get upgrade -y
+	sudo apt-get autoremove -y
+
+	# ensure we are have 'git' installed
 	if ! hash git 2> /dev/null; then
 		echo "Install 'git' binary"
-		sudo apt-get update -y
 		sudo apt-get install -y --no-install-recommends git-core
 	fi
 
@@ -100,7 +104,7 @@ checkout_sources() {
 	# update $FORK from cmd-line arguments
 	GITURL="https://github.com/$FORK/asuswrt-merlin"
 
-	# enshure we have asuswrt-merlin sources
+	# ensure we have asuswrt-merlin sources
 	if [ ! -d "$SRCDIR" ]; then
 		echo "Clone $GITURL repository"
 		git clone "$GITURL" "$SRCDIR"
