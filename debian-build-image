@@ -163,7 +163,7 @@ check_runtime_requirements()
 	[[ -n $(type -t lsb_release) ]] || fatal "${W}lsb_release{$Z} is expected to be installed. That is normally the case on Debian and Ubuntu anyway."
 	OS_REL=$(lsb_release -sr|cut -d . -f 1)
 	# All those packages are required according to the asuswrt-merlin docs (exceptions: I replaced g++ and make by build-essential, libncurses-dev => libncurses5-dev)
-	PREREQ_PKGS=(autoconf automake autopoint bash bison build-essential bzip2 diffutils file flex gawk gcc-multilib gettext gperf groff-base intltool libltdl7-dev libncurses5-dev libexpat1-dev libslang2 libssl-dev libtool libxml-parser-perl patch perl pkg-config python sed shtool tar texinfo unzip zlib1g zlib1g-dev)
+	PREREQ_PKGS=(autoconf automake autopoint bash bison build-essential bzip2 diffutils file flex gawk gcc-multilib gettext gperf groff-base intltool libltdl7-dev libncurses5-dev libexpat1-dev libslang2 libssl-dev libtool libtool-bin libxml-parser-perl patch perl pkg-config python sed shtool tar texinfo unzip xutils-dev zlib1g zlib1g-dev)
 	# Figure out the Debian flavor
 	case $(lsb_release -si) in
 		Debian)
@@ -317,6 +317,12 @@ if [[ -n "$UBUNTU_EXTRAS" ]]; then
 	# fix broken configure script for libxml2
 	( cd "$BASEDIR/release/src/router/libxml2" && sed -i.BAK-build-image s/^AM_C_PROTOTYPES/#AM_C_PROTOTYPES/g configure.in && aclocal ) || fatal "failed to fix broken configure script for libxml2"
 	function_exists hook_ubuntu_extras && hook_ubuntu_extras
+
+	# fix broken configure script for libogg
+	( cd "$BASEDIR/release/src/router/libogg" && aclocal --force ) || fatal "failed to fix broken configure script for libogg"
+
+	# fix broken configure script for wget
+	( cd "$BASEDIR/release/src/router/wget" && aclocal --force ) || fatal "failed to fix broken configure script for wget"
 fi
 # Clean up leftovers
 echo -e "${Y}NOTE:${Z} removing excess files"

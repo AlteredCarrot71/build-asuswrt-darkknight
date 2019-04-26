@@ -11,14 +11,14 @@ SHELL
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "ubuntu/trusty32"
+  config.vm.box = "ubuntu/xenial32"
   config.vm.boot_timeout = 300
   config.vm.box_check_update = false
   config.vm.provision "shell", inline: SCRIPT, privileged: false
 
   config.vm.provider "virtualbox" do |v|
-    v.memory = 1024
-    v.cpus = 1
+    v.memory = 2048
+    v.cpus = 2
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
 
