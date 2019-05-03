@@ -30,7 +30,7 @@ RELEASEDIR="release"
 VOLUME="/vagrant"
 
 ## Fork GitHub username
-FORK="RMerl"
+FORK="AlteredCarrot71"
 
 # The URL of the asuswrt-merlin Git repository.
 GITURL="https://github.com/$FORK/asuswrt-merlin"
