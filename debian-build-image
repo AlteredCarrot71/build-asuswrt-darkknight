@@ -206,7 +206,7 @@ tell_missing_packages()
 		fi
 	fi
 	# Find the packages which are already installed, so we can remove them from the list of required packages
-	local INST_ALREADY=($($APTI -s ${PREREQ_PKGS[*]}|awk '/is already the newest version\.$/ {print $1}'))
+	local INST_ALREADY=($($APTI -s ${PREREQ_PKGS[*]}|awk '/is already the newest version/ {print $1}'))
 	PREREQ_MISSING=($(for pkg in $(echo ""|awk -f <(cat - <<-'EOF'
 		# Embedded awk script
 		BEGIN {
@@ -376,3 +376,4 @@ make -C "$BASEDIR/release/$MKBASE" "TOOLCHAIN=$TOOLCHAIN" ${ROUTERMDL,,}
 function_exists hook_post_make && hook_post_make "$BASEDIR/release/$MKBASE"
 echo "Your image can be found here:"
 (cd "$BASEDIR" && for i in release/$MKBASE/image/*.trx; do echo -e "\t${G}$i${Z}"; done)
+
