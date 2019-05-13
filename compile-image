@@ -7,20 +7,20 @@
 
 set -e
 
-## Router model. 'RT-N66U', 'RT-AC66U', and etc.
+## Router model. 'RT-N66U', 'RT-AC66U'
 MODEL=""
 
-## Tag, commit sha or branch on asuswrt-merlin repository is used to make the
+## Tag, commit sha or branch on asuswrt-darkknight repository is used to make the
 ## image.
 RELEASE=""
 
 ## The folder for storing sources.
 ## Note, it isn't possible to use '/vagrant' shared folder for sources now,
-## because of the asuswrt-merlin build currently requires hardlinks. According
+## because of the asuswrt-darkknight build currently requires hardlinks. According
 ## to the virtualbox issue (https://www.virtualbox.org/ticket/818) they don't
 ## support hardlinks in shared folders, and they don't seem to plan on adding
 ## that.
-SRCDIR="/home/vagrant/asuswrt-merlin"
+SRCDIR="/home/vagrant/asuswrt-darkknight"
 
 ## The path of the directory in which the builed images will be stored.
 ## It is relative to $VOLUME thus images will be available on the host system.
@@ -32,8 +32,8 @@ VOLUME="/vagrant"
 ## Fork GitHub username
 FORK="AlteredCarrot71"
 
-# The URL of the asuswrt-merlin Git repository.
-GITURL="https://github.com/$FORK/asuswrt-merlin"
+# The URL of the asuswrt-darkknight Git repository.
+GITURL="https://github.com/$FORK/asuswrt-darkknight"
 REMOTE=origin
 
 ## The name of the build script.
@@ -46,12 +46,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 display_help() {
 	echo "Usage: ${SELFNAME} [OPTION]..."
-	echo "Build asuswrt-merlin image for ASUS router from sources."
+	echo "Build asuswrt-darkknight image for ASUS router from sources."
 	echo "Example: ${SELFNAME} -m RT-N66U -r 378.56_2"
 	echo ""
 	echo "  -h, --help        display this help and exit"
 	echo "  -m, --model       optional router model name you'd build image"
-	echo "  -f, --fork        optional GitHub username of the asuswrt-merlin fork"
+	echo "  -f, --fork        optional GitHub username of the asuswrt-darkknight fork"
 	echo "  -r, --release     optional release specified by tag or branch in the git repository"
 	echo "                    see ${GITURL}/releases"
 	echo "                    for more details Default is 'master'."
@@ -99,12 +99,12 @@ provision() {
 
 
 checkout_sources() {
-	echo "Get asuswrt-merlin sources"
+	echo "Get asuswrt-darkknight sources"
 
 	# update $FORK from cmd-line arguments
-	GITURL="https://github.com/$FORK/asuswrt-merlin"
+	GITURL="https://github.com/$FORK/asuswrt-darkknight"
 
-	# ensure we have asuswrt-merlin sources
+	# ensure we have asuswrt-darkknight sources
 	if [ ! -d "$SRCDIR" ]; then
 		echo "Clone $GITURL repository"
 		git clone "$GITURL" "$SRCDIR"
